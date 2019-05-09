@@ -6,21 +6,12 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Register'),
-      ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              child: Column(
-                children: <Widget>[
-                  Text('Register', style: Theme.of(context).textTheme.headline),
-                  Padding(padding: EdgeInsets.only(top: 20.0),
+  Widget _showTitle() {
+    return Text('Register', style: Theme.of(context).textTheme.headline);
+  }
+
+  Widget _showUsernameInput() {
+    return Padding(padding: EdgeInsets.only(top: 20.0),
                   child: TextFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -28,8 +19,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       hintText: 'Enter username, min length 6',
                       icon: Icon(Icons.face, color: Colors.grey,)
                     ),
-                  ),),
-                  Padding(padding: EdgeInsets.only(top: 20.0),
+                  ),);
+  }
+
+  Widget _showEmailInput() {
+    return Padding(padding: EdgeInsets.only(top: 20.0),
                   child: TextFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -37,8 +31,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       hintText: 'Enter a valid email',
                       icon: Icon(Icons.mail, color: Colors.grey,)
                     ),
-                  ),),
-                  Padding(padding: EdgeInsets.only(top: 20.0),
+                  ),);
+  }
+
+  Widget _showPasswordInput() {
+    return Padding(padding: EdgeInsets.only(top: 20.0),
                   child: TextFormField(
                     obscureText: true,
                     decoration: InputDecoration(
@@ -47,8 +44,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       hintText: 'Enter password, min length 6',
                       icon: Icon(Icons.lock, color: Colors.grey,)
                     ),
-                  ),),
-                  Padding(
+                  ),);
+  }
+
+  Widget _showFormActions() {
+    return Padding(
                     padding: EdgeInsets.only(top: 20.0),
                     child: Column(
                       children: <Widget>[
@@ -66,8 +66,28 @@ class _RegisterPageState extends State<RegisterPage> {
                         FlatButton(
                           child: Text('Existing user? Login'),
                           onPressed: () => print('login'),
-                        )
-                      ],
+                        );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Register'),
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Form(
+              child: Column(
+                children: <Widget>[
+                  _showTitle(),
+                  _showUsernameInput(),
+                  _showEmailInput(),
+                  _showPasswordInput(),
+                  _showFormActions()
+                  ],
 
                   ),)
                 ],
