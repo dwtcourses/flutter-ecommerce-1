@@ -8,9 +8,10 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _scafoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
-  bool _obscureText = true;
+  bool _isSubmitting,_obscureText = true;
   String _username, _email, _password;
 
   Widget _showTitle() {
@@ -72,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
       padding: EdgeInsets.only(top: 20.0),
       child: Column(
         children: <Widget>[
-          RaisedButton(
+          _isSubmitting == true ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)) : RaisedButton(
             child: Text(
               'Submit', 
               style: Theme.of(context).textTheme.body1.copyWith(color: Colors.black),),
@@ -99,17 +100,36 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _registerUser() async {
+    setState(() => _isSubmitting = true);
     http.Response response = await http.post('http://10.0.2.2:1337/auth/local/register', body: { "username": _username,
     "email": _email,
     "password": _password
     });
     final responseData = json.decode(response.body);
+    setState(() => _isSubmitting = false);
+    _showSuccessSnack();
+    _redirectUser();
     print(responseData);
+  }
+
+  void _showSuccessSnack() {
+    final snackBar = SnackBar(
+      content: Text('User $_username successfully created!', style: TextStyle(color: Colors.green),),
+    );
+    _scafoldKey.currentState.showSnackBar(snackBar);
+    _formKey.currentState.reset();
+  }
+
+  void _redirectUser() {
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacementNamed(context, '/products');
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scafoldKey,
       appBar: AppBar(
         title: Text('Register'),
       ),
