@@ -1,31 +1,17 @@
 import 'package:flutter/material.dart';
 
-class RegisterPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
-  String _username, _email, _password;
+  String _email, _password;
 
   Widget _showTitle() {
-    return Text('Register', style: Theme.of(context).textTheme.headline);
-  }
-
-  Widget _showUsernameInput() {
-    return Padding(padding: EdgeInsets.only(top: 20.0),
-      child: TextFormField(
-        onSaved: (val) => _username = val,
-        validator: (val) => val.length < 6 ? 'Username too short' : null,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: 'Username',
-          hintText: 'Enter username, min length 6',
-          icon: Icon(Icons.face, color: Colors.grey,)
-        ),
-      ),);
+    return Text('Login', style: Theme.of(context).textTheme.headline);
   }
 
   Widget _showEmailInput() {
@@ -69,12 +55,12 @@ class _RegisterPageState extends State<RegisterPage> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))
             ),
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).accentColor,
             onPressed: _submit
           ),
           FlatButton(
-            child: Text('Existing user? Login'),
-            onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+            child: Text('New user? Register'),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/register'),
             ),],),);
   }
 
@@ -83,7 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (form.validate()) {
       form.save();
-      print('Username: $_username, Email: $_email, Password: $_password');
+      print('Username: Email: $_email, Password: $_password');
     }
   }
 
@@ -91,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: Text('Login'),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -102,7 +88,6 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 children: <Widget>[
                   _showTitle(),
-                  _showUsernameInput(),
                   _showEmailInput(),
                   _showPasswordInput(),
                   _showFormActions()
