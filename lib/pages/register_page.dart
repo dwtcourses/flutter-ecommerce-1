@@ -106,10 +106,16 @@ class _RegisterPageState extends State<RegisterPage> {
     "password": _password
     });
     final responseData = json.decode(response.body);
-    setState(() => _isSubmitting = false);
-    _showSuccessSnack();
-    _redirectUser();
-    print(responseData);
+    if (response.statusCode == 200) {
+      setState(() => _isSubmitting = false);
+      _showSuccessSnack();
+      _redirectUser();
+      print(responseData);
+    } else {
+      setState(() => _isSubmitting = false);
+      final String errorMsg = responseData['message'];
+      _showErrorSnack(errorMsg);
+    }
   }
 
   void _showSuccessSnack() {
@@ -124,6 +130,15 @@ class _RegisterPageState extends State<RegisterPage> {
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, '/products');
     });
+  }
+
+  void _showErrorSnack(String errorMsg) {
+    final snackBar = SnackBar(
+      content: Text(errorMsg, style: TextStyle(color: Colors.red),),
+    );
+    _scafoldKey.currentState.showSnackBar(snackBar);
+    throw Exception('Error registering: $errorMsg');
+
   }
 
   @override
