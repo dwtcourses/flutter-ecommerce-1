@@ -29,7 +29,9 @@ class _ProductPageState extends State<ProductPage> {
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
-        return Text(json.encode(state.user));
+        return state.user != null 
+        ? Text(state.user.username) 
+        : Text('');
       },
     );
   }
