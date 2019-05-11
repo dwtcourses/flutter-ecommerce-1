@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -6,9 +8,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
-  bool _obscureText = true;
+  bool _isSubmitting, _obscureText = true;
   String _email, _password;
 
   Widget _showTitle() {
@@ -57,7 +60,9 @@ class _LoginPageState extends State<LoginPage> {
       padding: EdgeInsets.only(top: 20.0),
       child: Column(
         children: <Widget>[
-          RaisedButton(
+          _isSubmitting == true 
+          ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor),) 
+          : RaisedButton(
             child: Text(
               'Submit', 
               style: Theme.of(context).textTheme.body1.copyWith(color: Colors.black),),
@@ -79,13 +84,57 @@ class _LoginPageState extends State<LoginPage> {
 
     if (form.validate()) {
       form.save();
-      print('Username: Email: $_email, Password: $_password');
+      _registerUser();
     }
   }
+
+  void _registerUser() async {
+    setState(() => _isSubmitting = true);
+    http.Response response = await http.post('http://10.0.2.2:1337/auth/local', body: {
+    "identifier": _email,
+    "password": _password
+    });
+    final responseData = json.decode(response.body);
+    if (response.statusCode == 200) {
+      setState(() => _isSubmitting = false);
+      _showSuccessSnack();
+      _redirectUser();
+      print(responseData);
+    } else {
+      setState(() => _isSubmitting = false);
+      final String errorMsg = responseData['message'];
+      _showErrorSnack(errorMsg);
+    }
+  }
+
+  void _showSuccessSnack() {
+    final snackBar = SnackBar(
+      content: Text('User successfully looged in!', style: TextStyle(color: Colors.green),),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+    _formKey.currentState.reset();
+  }
+
+  void _redirectUser() {
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacementNamed(context, '/products');
+    });
+  }
+
+  void _showErrorSnack(String errorMsg) {
+    final snackBar = SnackBar(
+      content: Text(errorMsg, style: TextStyle(color: Colors.red),),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+    throw Exception('Error loggin in: $errorMsg');
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Login'),
       ),
