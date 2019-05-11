@@ -23,16 +23,43 @@ class _ProductPageState extends State<ProductPage> {
     super.initState();
     widget.onInit();
   }
+  //with StoreConnector we can read from a store or dispatch an action
+  final _appBar = PreferredSize(
+    preferredSize: Size.fromHeight(60.0),
+    child: StoreConnector<AppState, AppState>(
+      converter: (store) => store.state,
+      builder: (context, state /* state = returned val from converter */) {
+        return AppBar(
+          centerTitle: true,
+          title: SizedBox(
+            child: state.user != null 
+              ? Text(state.user.username) 
+              : Text(''),
+              ),
+          leading: Icon(Icons.store),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 12.0),
+              child: state.user != null 
+                ? IconButton(
+                    icon: Icon(Icons.exit_to_app),
+                    onPressed: () => print('pressed'),
+                    )
+                : Text(''),
+            )
+          ],
+        );
+      },
+      ),
+  );
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, AppState>(
-      converter: (store) => store.state,
-      builder: (context, state) {
-        return state.user != null 
-        ? Text(state.user.username) 
-        : Text('');
-      },
+    return Scaffold(
+      appBar: _appBar,
+      body: Container(
+        child: Text('Products Page'),
+      ),
     );
   }
 }
