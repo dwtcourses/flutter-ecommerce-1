@@ -1,28 +1,44 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/models/app_state.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+final gradientBackground = BoxDecoration(
+    gradient: LinearGradient(
+        begin: Alignment.bottomLeft,
+        end: Alignment.topRight,
+        stops: [
+      0.1,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
+        colors: [
+      Colors.deepOrange[300],
+      Colors.deepOrange[400],
+      Colors.deepOrange[500],
+      Colors.deepOrange[600],
+      Colors.deepOrange[700]
+    ]));
 
 class ProductPage extends StatefulWidget {
-  // () after Function type means 
-  // it will be immideatly executes this function 
+  // () after Function type means
+  // it will be immideatly executes this function
   // when that widget loads
   final void Function() onInit;
-  ProductPage({ this.onInit });
+  ProductPage({this.onInit});
 
   @override
   _ProductPageState createState() => _ProductPageState();
 }
 
 class _ProductPageState extends State<ProductPage> {
-
   @override
   void initState() {
     super.initState();
     widget.onInit();
   }
+
   //with StoreConnector we can read from a store or dispatch an action
   final _appBar = PreferredSize(
     preferredSize: Size.fromHeight(60.0),
@@ -32,25 +48,23 @@ class _ProductPageState extends State<ProductPage> {
         return AppBar(
           centerTitle: true,
           title: SizedBox(
-            child: state.user != null 
-              ? Text(state.user.username) 
-              : Text(''),
-              ),
+            child: state.user != null ? Text(state.user.username) : Text(''),
+          ),
           leading: Icon(Icons.store),
           actions: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 12.0),
-              child: state.user != null 
-                ? IconButton(
-                    icon: Icon(Icons.exit_to_app),
-                    onPressed: () => print('pressed'),
+              child: state.user != null
+                  ? IconButton(
+                      icon: Icon(Icons.exit_to_app),
+                      onPressed: () => print('pressed'),
                     )
-                : Text(''),
+                  : Text(''),
             )
           ],
         );
       },
-      ),
+    ),
   );
 
   @override
@@ -58,7 +72,16 @@ class _ProductPageState extends State<ProductPage> {
     return Scaffold(
       appBar: _appBar,
       body: Container(
-        child: Text('Products Page'),
+        decoration: gradientBackground,
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text('Products Page'),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
