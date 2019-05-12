@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
       _storeUserData(responseData);
       _showSuccessSnack();
       _redirectUser();
-      print(responseData);
+      //print(responseData);
     } else {
       setState(() => _isSubmitting = false);
       final String errorMsg = responseData['message'];
