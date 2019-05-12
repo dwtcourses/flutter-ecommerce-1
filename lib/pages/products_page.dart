@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/models/app_state.dart';
+import 'package:flutter_ecommerce/widgets/product_item.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 final gradientBackground = BoxDecoration(
@@ -73,15 +74,27 @@ class _ProductPageState extends State<ProductPage> {
       appBar: _appBar,
       body: Container(
         decoration: gradientBackground,
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text('Products Page'),
-              ],
-            ),
-          ],
-        ),
+        child: StoreConnector<AppState, AppState>(
+          converter: (store) => store.state,
+          builder: (_, state) {
+            return Column(
+              children: [
+                Expanded( // prevent overflow image 
+                  child: SafeArea(
+                    top: false,
+                    bottom: false,
+                    child: GridView.builder(
+                      itemCount: state.products.length, // itemBuilder takes state.products from here
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2
+                      ),
+                      itemBuilder: (context, i) => ProductItem(item: state.products[i]),
+                    ),
+                  ),
+                )
+              ]
+            );
+          },),
       ),
     );
   }
