@@ -37,7 +37,7 @@ class ProductItem extends StatelessWidget {
                 }
               ),
             ),
-        child: Image.network(pictureUrl, fit: BoxFit.cover),
+        child: Hero(tag: item, child: Image.network(pictureUrl, fit: BoxFit.cover)),
       ),
     );
   }
