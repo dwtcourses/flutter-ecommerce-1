@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/models/app_state.dart';
+import 'package:flutter_ecommerce/redux/actions.dart';
 import 'package:flutter_ecommerce/widgets/product_item.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -49,18 +50,31 @@ class _ProductPageState extends State<ProductsPage> {
         return AppBar(
           centerTitle: true,
           title: SizedBox(
-            child: state.user != null ? Text(state.user.username) : Text(''),
+            child: state.user != null 
+              ? Text(state.user.username) 
+              : FlatButton(
+                  child: Text('Register Here', 
+                    style: Theme.of(context).textTheme.body1),
+                    onPressed: () => Navigator.pushNamed(context, '/register'), 
+                    // with pushNamed we will be taken back from Register/Login page
+                    ),
           ),
-          leading: Icon(Icons.store),
+          leading: state.user != null ? Icon(Icons.store) : Text(''),
           actions: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 12.0),
-              child: state.user != null
-                  ? IconButton(
+              child: StoreConnector<AppState, VoidCallback>(
+                converter: (store) {
+                  return () => store.dispatch(logoutUserAction);
+                },
+                builder: (_, callback) {
+                  return state.user != null
+                    ? IconButton(
                       icon: Icon(Icons.exit_to_app),
-                      onPressed: () => print('pressed'),
-                    )
-                  : Text(''),
+                      onPressed: callback)
+                    : Text('');
+                },
+              ),
             )
           ],
         );

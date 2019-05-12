@@ -21,6 +21,13 @@ ThunkAction<AppState> getUserAction = (Store<AppState> store) async {
   store.dispatch(GetUserAction(user));
 };
 
+ThunkAction<AppState> logoutUserAction = (Store<AppState> store) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove('user');
+  User user; // declare but not initialize
+  store.dispatch(LogoutUserAction(user));
+};
+
 class GetUserAction {
   final User _user;
 
@@ -28,6 +35,15 @@ class GetUserAction {
 
   GetUserAction(this._user);
 }
+
+class LogoutUserAction {
+  final User _user;
+
+  User get user => this._user;
+
+  LogoutUserAction(this._user);
+}
+
  
 /* Products Actions */
 ThunkAction<AppState> getProductsAction = (Store<AppState> store) async {
