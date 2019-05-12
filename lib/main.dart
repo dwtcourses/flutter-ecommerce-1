@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter E-Commerce',
         routes: {
-          '/products': (BuildContext context) => ProductPage(
+          '/products': (BuildContext context) => ProductsPage(
             onInit: () {
               // dispatch an action (getUserAction) to grab user data
               StoreProvider.of<AppState>(context).dispatch(getUserAction);

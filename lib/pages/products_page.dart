@@ -22,18 +22,18 @@ final gradientBackground = BoxDecoration(
       Colors.deepOrange[700]
     ]));
 
-class ProductPage extends StatefulWidget {
+class ProductsPage extends StatefulWidget {
   // () after Function type means
   // it will be immideatly executes this function
   // when that widget loads
   final void Function() onInit;
-  ProductPage({this.onInit});
+  ProductsPage({this.onInit});
 
   @override
   _ProductPageState createState() => _ProductPageState();
 }
 
-class _ProductPageState extends State<ProductPage> {
+class _ProductPageState extends State<ProductsPage> {
   @override
   void initState() {
     super.initState();
@@ -70,6 +70,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       appBar: _appBar,
       body: Container(
@@ -86,7 +87,10 @@ class _ProductPageState extends State<ProductPage> {
                     child: GridView.builder(
                       itemCount: state.products.length, // itemBuilder takes state.products from here
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2
+                        crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                        crossAxisSpacing: 4.0,
+                        mainAxisSpacing: 4.0,
+                        childAspectRatio: orientation == Orientation.portrait ? 1 : 1.3,
                       ),
                       itemBuilder: (context, i) => ProductItem(item: state.products[i]),
                     ),
