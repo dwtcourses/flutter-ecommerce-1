@@ -31,10 +31,10 @@ class ProductsPage extends StatefulWidget {
   ProductsPage({this.onInit});
 
   @override
-  _ProductPageState createState() => _ProductPageState();
+  _ProductsPageState createState() => _ProductsPageState();
 }
 
-class _ProductPageState extends State<ProductsPage> {
+class _ProductsPageState extends State<ProductsPage> {
   @override
   void initState() {
     super.initState();
@@ -59,7 +59,7 @@ class _ProductPageState extends State<ProductsPage> {
                     // with pushNamed we will be taken back from Register/Login page
                     ),
           ),
-          leading: state.user != null ? Icon(Icons.store) : Text(''),
+          leading: state.user != null ? IconButton(icon: Icon(Icons.store), onPressed: () => Navigator.pushNamed(context, '/cart'),) : Text(''),
           actions: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 12.0),
