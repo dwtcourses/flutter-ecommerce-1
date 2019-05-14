@@ -64,3 +64,30 @@ class GetProductsAction {
 
   GetProductsAction(this._products);
 }
+
+
+/* Cart Producrts Action */
+// this thunk action is different then getProductsAction due to it takes an argument, so that it return another function
+ThunkAction<AppState> toggleCartProductAction(Product cartProduct) {
+  return (Store<AppState> store) {
+    final List<Product> cartProducts = store.state.cartProducts;
+    final int index = cartProducts.indexWhere((product) => product.id == cartProduct.id);
+    List<Product> updatedCartProducts = List.from(cartProducts);
+    bool isInCart = index > -1 == true;
+    if (isInCart) {
+      updatedCartProducts.removeAt(index);
+    } else {
+      updatedCartProducts.add(cartProduct);
+    }
+    store.dispatch(ToggleCartProductAction(updatedCartProducts));
+  };
+}
+
+class ToggleCartProductAction {
+  final List<Product> _cartProducts;
+
+  List<Product> get cartProducts => this._cartProducts;
+
+  ToggleCartProductAction(this._cartProducts);
+
+}
