@@ -128,10 +128,10 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _showSuccessSnack() {
-    final snackBar = SnackBar(
+    final snackbar = SnackBar(
       content: Text('User $_username successfully created!', style: TextStyle(color: Colors.green),),
     );
-    _scafoldKey.currentState.showSnackBar(snackBar);
+    _scafoldKey.currentState.showSnackBar(snackbar);
     _formKey.currentState.reset();
   }
 

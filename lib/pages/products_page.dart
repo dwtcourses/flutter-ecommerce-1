@@ -65,7 +65,7 @@ class _ProductsPageState extends State<ProductsPage> {
                 itemCount: state.cartProducts.length,
                 badgeColor: Colors.lime,
                 badgeTextColor: Colors.black,
-                hideZeroCount: false,
+                hideZeroCount: true,
                 icon: Icon(Icons.store), 
                 onPressed: () => Navigator.pushNamed(context, '/cart'),) 
             : Text(''),

@@ -38,11 +38,18 @@ class MyApp extends StatelessWidget {
               StoreProvider.of<AppState>(context).dispatch(getUserAction);
               // dispatch an action (getProductsAction) to grab products data
               StoreProvider.of<AppState>(context).dispatch(getProductsAction);
+              // dispatch an action (getCartProductsAction) to grab products is Cart
+              StoreProvider.of<AppState>(context).dispatch(getCartProductsAction);
             }
           ),
           '/login': (BuildContext context) => LoginPage(),
           '/register': (BuildContext context) => RegisterPage(),
-          '/cart': (BuildContext context) => CartPage(),
+          '/cart': (BuildContext context) => CartPage(onInit: () {
+            // dispatch an action (getCardsAction)
+            StoreProvider.of<AppState>(context).dispatch(getCardsAction);
+            // dispatch an action (getCardTokenAction)
+            StoreProvider.of<AppState>(context).dispatch(getCardTokenAction);
+          }),
         },
         theme: ThemeData(
           brightness: Brightness.dark,
