@@ -1,0 +1,26 @@
+{
+  "connection": "default",
+  "collectionName": "",
+  "info": {
+    "name": "order",
+    "description": ""
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "amount": {
+      "default": "",
+      "type": "decimal"
+    },
+    "products": {
+      "default": "",
+      "type": "json"
+    },
+    "user": {
+      "model": "user",
+      "via": "orders",
+      "plugin": "users-permissions"
+    }
+  }
+}
